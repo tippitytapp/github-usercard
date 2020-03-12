@@ -35,31 +35,29 @@
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
-
+const friendsArray = [];
 axios.get('https://api.github.com/users/tippitytapp/followers')
   .then(response => {
     const followersArray = response.data;
-    followersArray.forEach((item) => {
-      followersArray.push(item.login)
-      // console.log(followersArray);
+     
+     followersArray.forEach((item) => {
+     friendsArray.push(item.login)    
     })
-    
-    // console.log(followersArray);
-    
-    // console.log(response.data.login);
+    console.log(followersArray);
+   grabData(friendsArray);
   })
   .catch(err => {
     console.log(`error received ${err}`);
   });
 
 
-const followersArray = [
-  'tetondan',
-  'dustinmyers',
-  'justsml',
-  'luishrd',
- 'bigknell'
-];
+// const followersArray = [
+//   'tetondan',
+//   'dustinmyers',
+//   'justsml',
+//   'luishrd',
+//  'bigknell'
+// ];
 function grabData(array) {
   array.forEach((item) => {
     axios.get(`https://api.github.com/users/${item}`)
@@ -73,7 +71,7 @@ function grabData(array) {
 });
 });
 };
-grabData(followersArray);
+// grabData(friendsArray);
 
 function userData(User){
     let user = document.createElement("div");
