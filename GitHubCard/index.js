@@ -2,6 +2,17 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+  axios.get('https://api.github.com/users/tippitytapp')
+  .then(response => {
+    console.log(response);
+    response.forEach(item =>{
+      cards.append(userData(item))
+    })
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -26,6 +37,40 @@
 
 const followersArray = [];
 
+function userData(User){
+    let user = document.createElement("div");
+    user.classList.add("card");
+    let userImg = document.createELement("img");
+    let cardInfo = document.createElement("div");
+    cardInfo.classList.add("card-info");
+    let name = document.createElement("h3");
+    name.classList.add("name");
+    let userName = document.createElement("p");
+    userName.classList.add("username");
+    let location = document.createElement("p");
+    let profile = document.createElement("p");
+    let profileLink = document.createElement("a");
+    let followers = document.createElement("p");
+    let following = document.createElement("p");
+    let bio = document.createElement("p");
+
+    name.textContent = User.data.name;
+    userName.textContent = User.data.login;
+    location.textContent = `Location: ${User.data.location}`;
+    profile.textContent = "Profile:";
+    profileLink.textContent = User.data.html_url;
+    followers.textContent = `Followers: ${User.data.followers}`
+    following.textContent = `Following: ${User.data.following}`
+
+
+    user.append(userImg, cardInfo);
+    userInfo.append(name, userName, location, profile, profileLink, followers, following, bio);
+    profile.append(profileLink);
+    return userData
+}
+
+const cards = document.querySelector(".cards");
+console.log(cards);
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
