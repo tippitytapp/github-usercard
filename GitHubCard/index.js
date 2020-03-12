@@ -7,6 +7,7 @@
  const userInfo = userData(response.data);
  const cards = document.querySelector(".cards");
  cards.append(userInfo);
+ console.log(response.data);
      
     })
   .catch(err => {
@@ -35,7 +36,44 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+axios.get('https://api.github.com/users/tippitytapp/followers')
+  .then(response => {
+    const followersArray = response.data;
+    followersArray.forEach((item) => {
+      followersArray.push(item.login)
+      // console.log(followersArray);
+    })
+    
+    // console.log(followersArray);
+    
+    // console.log(response.data.login);
+  })
+  .catch(err => {
+    console.log(`error received ${err}`);
+  });
+
+
+const followersArray = [
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+ 'bigknell'
+];
+function grabData(array) {
+  array.forEach((item) => {
+    axios.get(`https://api.github.com/users/${item}`)
+    .then(response => {
+      const userInfo = userData(response.data);
+      const cards = document.querySelector(".cards");
+      cards.append(userInfo);
+  })
+.catch(err => {
+  console.log(`error received ${err}`);
+});
+});
+};
+grabData(followersArray);
 
 function userData(User){
     let user = document.createElement("div");
@@ -58,7 +96,7 @@ function userData(User){
     name.textContent = User.name;
     userName.textContent = User.login;
     location.textContent = `Location: ${User.location}`;
-    profile.textContent = "Profile:";
+    profile.textContent = "Profile: ";
     profileLink.textContent = User.html_url;
     profileLink.href = User.html_url;
     followers.textContent = `Followers: ${User.followers}`;
