@@ -99,7 +99,7 @@ function userData(User){
     profileLink.href = User.html_url;
     followers.textContent = `Followers: ${User.followers}`;
     following.textContent = `Following: ${User.following}`;
-    bio.textContent = user.bio;
+    bio.textContent = `Bio: ${User.bio}`;
 
 
     user.append(userImg, cardInfo);
