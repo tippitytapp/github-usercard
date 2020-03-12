@@ -4,13 +4,13 @@
 */
   axios.get('https://api.github.com/users/tippitytapp')
   .then(response => {
-    console.log(response);
-    response.forEach(item =>{
-      cards.append(userData(item))
+ const userInfo = userData(response.data);
+ const cards = document.querySelector(".cards");
+ cards.append(userInfo);
+     
     })
-  })
   .catch(err => {
-    console.log(err);
+    console.log(`error received ${err}`);
   });
 
 
@@ -40,7 +40,7 @@ const followersArray = [];
 function userData(User){
     let user = document.createElement("div");
     user.classList.add("card");
-    let userImg = document.createELement("img");
+    let userImg = document.createElement("img");
     let cardInfo = document.createElement("div");
     cardInfo.classList.add("card-info");
     let name = document.createElement("h3");
@@ -54,23 +54,26 @@ function userData(User){
     let following = document.createElement("p");
     let bio = document.createElement("p");
 
-    name.textContent = User.data.name;
-    userName.textContent = User.data.login;
-    location.textContent = `Location: ${User.data.location}`;
+    userImg.src = User.avatar_url;
+    name.textContent = User.name;
+    userName.textContent = User.login;
+    location.textContent = `Location: ${User.location}`;
     profile.textContent = "Profile:";
-    profileLink.textContent = User.data.html_url;
-    followers.textContent = `Followers: ${User.data.followers}`
-    following.textContent = `Following: ${User.data.following}`
+    profileLink.textContent = User.html_url;
+    profileLink.href = User.html_url;
+    followers.textContent = `Followers: ${User.followers}`;
+    following.textContent = `Following: ${User.following}`;
+    bio.textContent = user.bio;
 
 
     user.append(userImg, cardInfo);
-    userInfo.append(name, userName, location, profile, profileLink, followers, following, bio);
+    cardInfo.append(name, userName, location, profile, profileLink, followers, following, bio);
     profile.append(profileLink);
-    return userData
+    return user
 }
 
-const cards = document.querySelector(".cards");
-console.log(cards);
+
+
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
