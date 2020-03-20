@@ -2,6 +2,18 @@
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
 */
+  axios.get('https://api.github.com/users/tippitytapp')
+  .then(response => {
+ const userInfo = userData(response.data);
+ const cards = document.querySelector(".cards");
+ cards.append(userInfo);
+ console.log(response.data);
+     
+    })
+  .catch(err => {
+    console.log(`error received ${err}`);
+  });
+
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -23,8 +35,80 @@
           Using that array, iterate over it, requesting data for each user, creating a new card for each
           user, and adding that card to the DOM.
 */
+const friendsArray = [];
+axios.get('https://api.github.com/users/tippitytapp/followers')
+  .then(response => {
+    const followersArray = response.data;
+     
+     followersArray.forEach((item) => {
+     friendsArray.push(item.login)    
+    })
+    console.log(followersArray);
+   grabData(friendsArray);
+  })
+  .catch(err => {
+    console.log(`error received ${err}`);
+  });
 
-const followersArray = [];
+
+// const followersArray = [
+//   'tetondan',
+//   'dustinmyers',
+//   'justsml',
+//   'luishrd',
+//  'bigknell'
+// ];
+function grabData(array) {
+  array.forEach((item) => {
+    axios.get(`https://api.github.com/users/${item}`)
+    .then(response => {
+      const userInfo = userData(response.data);
+      const cards = document.querySelector(".cards");
+      cards.append(userInfo);
+  })
+.catch(err => {
+  console.log(`error received ${err}`);
+});
+});
+};
+// grabData(friendsArray);
+
+function userData(User){
+    let user = document.createElement("div");
+    user.classList.add("card");
+    let userImg = document.createElement("img");
+    let cardInfo = document.createElement("div");
+    cardInfo.classList.add("card-info");
+    let name = document.createElement("h3");
+    name.classList.add("name");
+    let userName = document.createElement("p");
+    userName.classList.add("username");
+    let location = document.createElement("p");
+    let profile = document.createElement("p");
+    let profileLink = document.createElement("a");
+    let followers = document.createElement("p");
+    let following = document.createElement("p");
+    let bio = document.createElement("p");
+
+    userImg.src = User.avatar_url;
+    name.textContent = User.name;
+    userName.textContent = User.login;
+    location.textContent = `Location: ${User.location}`;
+    profile.textContent = "Profile: ";
+    profileLink.textContent = User.html_url;
+    profileLink.href = User.html_url;
+    followers.textContent = `Followers: ${User.followers}`;
+    following.textContent = `Following: ${User.following}`;
+    bio.textContent = `Bio: ${User.bio}`;
+
+
+    user.append(userImg, cardInfo);
+    cardInfo.append(name, userName, location, profile, profileLink, followers, following, bio);
+    profile.append(profileLink);
+    return user
+}
+
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
